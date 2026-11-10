@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>In conversation with Yaman Jain</title>
+<meta name="description" content="A voice interview with Yaman Jain's AI voice bot. Press start and ask your question out loud.">
+<meta name="theme-color" content="#f2ede3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23d8402a'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%231b1a17' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f2ede3;
+    --paper-deep: #e8e1d3;
+    --ink: #1b1a17;
+    --ink-soft: #5d584e;
+    --rule: #cfc6b4;
+    --accent: #d8402a;
+    --accent-ink: #fff8f2;
+    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --sans: "Hanken Grotesk", "Helvetica Neue", sans-serif;
+    --mono: "DM Mono", ui-monospace, Menlo, monospace;
+    --orb: 208px;
+    --level: 0;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-bottom: 96px; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background:
+      radial-gradient(1200px 600px at 12% -10%, #fbf8f1 0%, transparent 60%),
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+
+  .label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .banner {
+    padding: 8px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+
+  .page {
+    display: grid;
+    grid-template-columns: minmax(340px, 440px) minmax(0, 1fr);
+    max-width: 1180px;
+    margin: 0 auto;
+    min-height: 100dvh;
+  }
+
+  /* ---------- Stage (left) ---------- */
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 36px 40px 32px;
+    border-right: 1px solid var(--rule);
+  }
+  .masthead h1 {
+    margin: 10px 0 12px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .masthead h1 em { font-style: italic; color: var(--accent); }
+  .masthead p { margin: 0; color: var(--ink-soft); font-size: 15.5px; max-width: 34ch; }
+
+  .console {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    min-height: 0;
+  }
+  .orb {
+    position: relative;
+    width: var(--orb);
+    height: var(--orb);
+    flex: none;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .orb-core {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    transition: background-color .35s ease, border-color .35s ease, color .35s ease, transform .12s ease-out;
+  }
+  .orb-core span {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 30px;
+    line-height: 1;
+  }
+  .orb-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .orb:hover .orb-core { background: var(--ink); color: var(--paper); }
+
+  body[data-state="listening"] .orb-core,
+  body[data-state="hearing"] .orb-core {
+    background: var(--ink);
+    color: var(--paper);
+    transform: scale(calc(1 + var(--level) * 0.16));
+  }
+  body[data-state="hearing"] .orb-ring.r1 {
+    opacity: .35;
+    transform: scale(calc(1.1 + var(--level) * 0.35));
+    transition: transform .12s ease-out;
+  }
+  body[data-state="thinking"] .orb-core { border-style: dashed; animation: spin 9s linear infinite; }
+  body[data-state="thinking"] .orb-core span { animation: spin 9s linear infinite reverse; }
+  body[data-state="speaking"] .orb-core { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  body[data-state="speaking"] .orb-ring { border-color: var(--accent); animation: ripple 2.4s ease-out infinite; }
+  body[data-state="speaking"] .orb-ring.r2 { animation-delay: 1.2s; }
+  body[data-state="paused"] .orb-core { border-color: var(--rule); color: var(--ink-soft); }
+  body:not([data-state="idle"]) .orb:hover .orb-core { filter: brightness(1.06); }
+  body[data-state="thinking"] .orb:hover .orb-core,
+  body[data-state="paused"] .orb:hover .orb-core { background: transparent; color: inherit; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: .55; }
+    100% { transform: scale(1.55); opacity: 0; }
+  }
+
+  .status { text-align: center; min-height: 44px; }
+  .status .hint { margin: 4px 0 0; font-size: 14px; color: var(--ink-soft); }
+
+  .controls { display: flex; gap: 10px; }
+  .ctl {
+    min-width: 92px;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background-color .2s ease, color .2s ease;
+  }
+  .ctl:hover, .ctl[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .ctl.end { border-color: var(--accent); color: var(--accent); }
+  .ctl.end:hover { background: var(--accent); color: var(--accent-ink); }
+
+  .colophon { font-size: 13px; color: var(--ink-soft); margin: 0; }
+
+  /* ---------- Interview (right) ---------- */
+  .interview {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 36px 48px 0;
+  }
+  .notice {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border-left: 3px solid var(--accent);
+    background: var(--paper-deep);
+    font-size: 15px;
+  }
+  .prompts { margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 14.5px;
+    line-height: 1.3;
+    text-align: left;
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+  @media (hover: hover) {
+    .chip:hover { border-color: var(--ink); background: #fbf8f1; }
+  }
+  .chip:active { border-color: var(--ink); }
+
+  .transcript { flex: 1; padding: 28px 0 40px; }
+  .empty {
+    margin: 56px 0 0;
+    max-width: 22ch;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 34px;
+    line-height: 1.15;
+    color: var(--rule);
+  }
+  .qa { padding: 22px 0; border-top: 1px solid var(--rule); animation: rise .45s ease both; }
+  .qa p { margin: 0; overflow-wrap: anywhere; }
+  .qa .tag { display: block; margin-bottom: 4px; }
+  .qa .q { font-weight: 600; font-size: 17px; }
+  .qa .q.pending { color: var(--ink-soft); font-weight: 400; font-style: italic; }
+  .qa .a { margin-top: 16px; font-family: var(--serif); font-size: 25px; line-height: 1.32; }
+  .qa .a .tag { color: var(--accent); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+  .composer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    padding: 14px 0 max(20px, env(safe-area-inset-bottom));
+    background: linear-gradient(to bottom, transparent, var(--paper) 22%);
+  }
+  .composer input {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    padding: 0 18px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: #fbf8f1;
+    font-size: 16px;
+  }
+  .composer input::placeholder { color: var(--ink-soft); }
+  .composer button {
+    height: 48px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .composer button:hover { background: var(--accent); }
+
+  /* ---------- Narrow screens ---------- */
+  @media (max-width: 899px) {
+    :root { --orb: 148px; }
+    .page { display: block; }
+    .stage {
+      position: static;
+      height: auto;
+      padding: 24px 16px 20px;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead h1 { font-size: 36px; margin: 8px 0 8px; }
+    .masthead p { max-width: none; font-size: 15px; }
+    .console { padding: 24px 0 4px; gap: 16px; }
+    .orb-core span { font-size: 24px; }
+    .colophon { display: none; }
+    .interview { padding: 20px 16px 0; }
+    .empty { margin-top: 28px; font-size: 27px; }
+    .qa .a { font-size: 22px; }
+    .composer button { padding: 0 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body data-state="idle">
+
+<div class="banner" id="sampleBanner" hidden>Sample data: these answers are placeholders, not Yaman's real ones yet.</div>
+
+<div class="page">
+  <section class="stage" aria-label="Voice controls">
+    <header class="masthead">
+      <span class="label">The voice interview</span>
+      <h1>In conversation with <em>Yaman Jain</em></h1>
+      <p>Ask what you would ask in a first interview. The answers are Yaman's, spoken by his AI voice bot.</p>
+    </header>
+
+    <div class="console">
+      <button class="orb" id="orb" type="button" aria-label="Start the voice conversation">
+        <span class="orb-ring r1"></span>
+        <span class="orb-ring r2"></span>
+        <span class="orb-core"><span id="orbWord">Start</span></span>
+      </button>
+
+      <div class="status" role="status" aria-live="polite">
+        <div class="label" id="statusLabel">Tap to start</div>
+        <p class="hint" id="statusHint">Allow the microphone when asked, then just talk.</p>
+      </div>
+
+      <div class="controls" id="controls" hidden>
+        <button class="ctl" id="muteBtn" type="button" aria-pressed="false">Mute</button>
+        <button class="ctl" id="pauseBtn" type="button" aria-pressed="false">Pause</button>
+        <button class="ctl end" id="endBtn" type="button">End</button>
+      </div>
+    </div>
+
+    <p class="colophon">Your voice is sent to be transcribed and answered. Nothing is needed from you beyond a microphone.</p>
+  </section>
+
+  <main class="interview">
+    <p class="notice" id="notice" role="alert" hidden></p>
+
+    <div class="prompts">
+      <span class="label">Try asking</span>
+      <ul class="chips" id="chips"></ul>
+    </div>
+
+    <div class="transcript" id="transcript" aria-live="polite">
+      <p class="empty" id="empty">The interview appears here as you talk.</p>
+    </div>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <input id="textInput" type="text" aria-label="Type a question instead" placeholder="Or type a question" maxlength="500" enterkeyhint="send">
+      <button type="submit">Ask</button>
+    </form>
+  </main>
+</div>
+
+<audio id="player" playsinline preload="auto"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/bundle.min.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const CONFIG = {
+    endpoint: 'https://vociferous-swan.pikapod.net/webhook/voicebot-turn',
+    vadAssets: 'https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/',
+    ortAssets: 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/',
+    sampleRate: 16000,
+    maxSamples: 16000 * 55,
+    maxHistory: 10,
+    requestTimeoutMs: 45000,
+    bargeInProbability: 0.8,
+    bargeInMs: 350,
+    greetingText: "Hi, I'm Yaman's voice bot. Ask me anything you would ask in an interview.",
+    greetingAudio: '',
+    questions: [
+      'What should we know about your life story in a few sentences?',
+      "What's your #1 superpower?",
+      'What are the top 3 areas you would like to grow in?',
+      'What misconception do your coworkers have about you?',
+      'How do you push your boundaries and limits?',
+    ],
+  };
+
+  const VIEW = {
+    idle:      { word: 'Start', label: 'Tap to start',  hint: 'Allow the microphone when asked, then just talk.' },
+    loading:   { word: '...',   label: 'Getting ready', hint: 'Setting up the microphone.' },
+    listening: { word: 'Go on', label: 'Listening',     hint: 'Ask your question out loud.' },
+    hearing:   { word: 'Mm-hm', label: 'Hearing you',   hint: 'Pause when you are done.' },
+    thinking:  { word: 'Hmm',   label: 'Thinking',      hint: 'One moment.' },
+    speaking:  { word: 'Yaman', label: 'Speaking',      hint: 'Talk or tap the circle to interrupt.' },
+    paused:    { word: 'Paused', label: 'Paused',       hint: 'Press Resume to carry on.' },
+  };
+
+  const MESSAGES = {
+    micDenied: 'The microphone is blocked. Allow it in your browser settings and press Start again, or type your question below.',
+    micMissing: 'This browser cannot use the microphone here. Open this page in Chrome or Safari, or type your question below.',
+    inApp: 'You seem to be inside an in-app browser, where the microphone often fails. Open this page in Chrome or Safari for voice, or type your question below.',
+    network: 'I could not reach the server. Check your connection and try again.',
+    timeout: 'That took too long. Please ask again.',
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const el = {
+    orb: $('orb'), orbWord: $('orbWord'), label: $('statusLabel'), hint: $('statusHint'),
+    controls: $('controls'), mute: $('muteBtn'), pause: $('pauseBtn'), end: $('endBtn'),
+    notice: $('notice'), chips: $('chips'), transcript: $('transcript'), empty: $('empty'),
+    composer: $('composer'), input: $('textInput'), player: $('player'), banner: $('sampleBanner'),
+  };
+
+  const session = {
+    state: 'idle',
+    active: false,
+    muted: false,
+    vad: null,
+    turn: null,
+    carry: null,
+    loudMs: 0,
+    heldPlayback: false,
+    audioUnlocked: false,
+    history: [],
+  };
+
+  /* ---------- View ---------- */
+
+  function setState(state) {
+    session.state = state;
+    session.loudMs = 0;
+    document.body.dataset.state = state;
+    const view = VIEW[state];
+    el.orbWord.textContent = view.word;
+    el.label.textContent = session.muted && state === 'listening' ? 'Mic muted' : view.label;
+    el.hint.textContent = session.muted && state === 'listening' ? 'Unmute to talk, or type below.' : view.hint;
+    el.controls.hidden = !session.active;
+    el.pause.textContent = state === 'paused' ? 'Resume' : 'Pause';
+    el.pause.setAttribute('aria-pressed', String(state === 'paused'));
+    el.orb.setAttribute('aria-label', state === 'idle' ? 'Start the voice conversation' : view.label);
+  }
+
+  function showNotice(text) {
+    el.notice.textContent = text;
+    el.notice.hidden = false;
+  }
+
+  function clearNotice() { el.notice.hidden = true; }
+
+  function setLevel(frame) {
+    let sum = 0;
+    for (let i = 0; i < frame.length; i += 4) sum += frame[i] * frame[i];
+    const rms = Math.sqrt(sum / (frame.length / 4));
+    document.documentElement.style.setProperty('--level', Math.min(1, rms * 9).toFixed(3));
+  }
+
+  function tagged(className, tagText, text) {
+    const p = document.createElement('p');
+    p.className = className;
+    const tag = document.createElement('span');
+    tag.className = 'label tag';
+    tag.textContent = tagText;
+    p.append(tag, document.createTextNode(text));
+    return p;
+  }
+
+  function addExchange(question) {
+    el.empty.hidden = true;
+    const row = document.createElement('article');
+    row.className = 'qa';
+    if (question !== null) row.append(tagged(question ? 'q' : 'q pending', 'Question', question || 'Listening back to what you said...'));
+    el.transcript.append(row);
+    row.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    return row;
+  }
+
+  function setQuestion(row, text) {
+    const q = row.querySelector('.q');
+    if (!q || !text) return;
+    q.className = 'q';
+    q.lastChild.textContent = text;
+  }
+
+  function setAnswer(row, text) {
+    row.append(tagged('a', 'Yaman', text));
+    row.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }
+
+  function dropRow(row) {
+    row.remove();
+    el.empty.hidden = el.transcript.querySelector('.qa') !== null;
+  }
+
+  /* ---------- Audio helpers ---------- */
+
+  function encodeWav(samples) {
+    const buffer = new ArrayBuffer(44 + samples.length * 2);
+    const view = new DataView(buffer);
+    const writeText = (offset, text) => [...text].forEach((ch, i) => view.setUint8(offset + i, ch.charCodeAt(0)));
+    writeText(0, 'RIFF');
+    view.setUint32(4, 36 + samples.length * 2, true);
+    writeText(8, 'WAVEfmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, CONFIG.sampleRate, true);
+    view.setUint32(28, CONFIG.sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeText(36, 'data');
+    view.setUint32(40, samples.length * 2, true);
+    for (let i = 0; i < samples.length; i++) {
+      const s = Math.max(-1, Math.min(1, samples[i]));
+      view.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+    }
+    return new Blob([buffer], { type: 'audio/wav' });
+  }
+
+  function joinAudio(first, second) {
+    if (!first) return second;
+    const joined = new Float32Array(first.length + second.length);
+    joined.set(first);
+    joined.set(second, first.length);
+    return joined;
+  }
+
+  function base64ToBlob(base64, mime) {
+    const bytes = Uint8Array.from(atob(base64), (ch) => ch.charCodeAt(0));
+    return new Blob([bytes], { type: mime || 'audio/mpeg' });
+  }
+
+  function setPlayerSource(blob) {
+    if (el.player.dataset.url) URL.revokeObjectURL(el.player.dataset.url);
+    el.player.dataset.url = URL.createObjectURL(blob);
+    el.player.src = el.player.dataset.url;
+  }
+
+  async function unlockAudio() {
+    if (session.audioUnlocked) return;
+    session.audioUnlocked = true;
+    setPlayerSource(encodeWav(new Float32Array(800)));
+    await el.player.play().catch(() => {});
+  }
+
+  function stopPlayback() {
+    el.player.pause();
+    session.heldPlayback = false;
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+
+  function afterSpeaking() {
+    if (session.state !== 'speaking') return;
+    setState(session.active ? 'listening' : 'idle');
+  }
+
+  function startPlayback() {
+    if (session.state === 'paused') { session.heldPlayback = true; return; }
+    setState('speaking');
+    el.player.play().catch(afterSpeaking);
+  }
+
+  function playReply(blob) {
+    setPlayerSource(blob);
+    startPlayback();
+  }
+
+  function speakWithBrowserVoice(text) {
+    if (!('speechSynthesis' in window) || session.state === 'paused') return afterSpeakingFrom('thinking');
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.onend = afterSpeaking;
+    utterance.onerror = afterSpeaking;
+    setState('speaking');
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function afterSpeakingFrom(expected) {
+    if (session.state !== expected) return;
+    setState(session.active ? 'listening' : 'idle');
+  }
+
+  el.player.addEventListener('ended', afterSpeaking);
+  el.player.addEventListener('error', afterSpeaking);
+
+  /* ---------- Turns ---------- */
+
+  function rememberExchange(question, answer) {
+    session.history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
+    session.history = session.history.slice(-CONFIG.maxHistory);
+  }
+
+  function buildForm(turn) {
+    const form = new FormData();
+    form.append('turnId', turn.id);
+    form.append('history', JSON.stringify(session.history));
+    if (turn.audio) form.append('audio', encodeWav(turn.audio), 'question.wav');
+    if (turn.text) form.append('text', turn.text);
+    return form;
+  }
+
+  function isCurrent(turn) { return session.turn === turn; }
+
+  function finishWithoutReply(turn) {
+    dropRow(turn.row);
+    session.turn = null;
+    afterSpeakingFrom('thinking');
+  }
+
+  const RESPONSE_HANDLERS = {
+    ok: deliverReply,
+    capped: deliverReply,
+    empty: finishWithoutReply,
+    error: (turn, data) => {
+      showNotice(data.message || MESSAGES.network);
+      finishWithoutReply(turn);
+    },
+  };
+
+  function deliverReply(turn, data) {
+    const question = data.transcript || turn.text || '';
+    setQuestion(turn.row, question);
+    setAnswer(turn.row, data.reply);
+    rememberExchange(question, data.reply);
+    el.banner.hidden = data.sampleData !== true;
+    session.turn = null;
+    if (data.audioBase64) return playReply(base64ToBlob(data.audioBase64, data.audioMime));
+    speakWithBrowserVoice(data.reply);
+  }
+
+  function failTurn(turn, error) {
+    if (!isCurrent(turn)) return;
+    showNotice(error.name === 'AbortError' ? MESSAGES.timeout : MESSAGES.network);
+    finishWithoutReply(turn);
+  }
+
+  async function submitTurn({ audio = null, text = '' }) {
+    clearNotice();
+    const turn = {
+      id: crypto.randomUUID(),
+      audio,
+      text,
+      row: addExchange(text),
+      controller: new AbortController(),
+      cancelled: false,
+    };
+    session.turn = turn;
+    setState('thinking');
+    const timer = setTimeout(() => turn.controller.abort(), CONFIG.requestTimeoutMs);
+    try {
+      const response = await fetch(CONFIG.endpoint, { method: 'POST', body: buildForm(turn), signal: turn.controller.signal });
+      const data = await response.json();
+      if (!isCurrent(turn)) return;
+      (RESPONSE_HANDLERS[data.status] || RESPONSE_HANDLERS.error)(turn, data);
+    } catch (error) {
+      if (!turn.cancelled) failTurn(turn, error);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function cancelTurn() {
+    const turn = session.turn;
+    if (!turn) return null;
+    turn.cancelled = true;
+    turn.controller.abort();
+    dropRow(turn.row);
+    session.turn = null;
+    return turn;
+  }
+
+  /* ---------- Voice activity ---------- */
+
+  function trackBargeIn(probability, frameMs) {
+    const loud = probability > CONFIG.bargeInProbability;
+    session.loudMs = loud ? session.loudMs + frameMs : Math.max(0, session.loudMs - frameMs);
+    if (session.loudMs >= CONFIG.bargeInMs) bargeIn();
+  }
+
+  function bargeIn() {
+    stopPlayback();
+    setState('hearing');
+  }
+
+  function interruptSpeaking() {
+    stopPlayback();
+    setState(session.active ? 'listening' : 'idle');
+  }
+
+  function keepTalkingDuringThinking() {
+    const turn = session.turn;
+    if (!turn || !turn.audio) return;
+    session.carry = turn.audio;
+    cancelTurn();
+    setState('hearing');
+  }
+
+  const SPEECH_START = {
+    listening: () => setState('hearing'),
+    thinking: keepTalkingDuringThinking,
+  };
+
+  function onFrameProcessed(probabilities, frame) {
+    setLevel(frame);
+    if (session.state === 'speaking') trackBargeIn(probabilities.isSpeech, frame.length / (CONFIG.sampleRate / 1000));
+  }
+
+  function onSpeechRealStart() {
+    (SPEECH_START[session.state] || (() => {}))();
+  }
+
+  function onSpeechEnd(audio) {
+    if (session.state !== 'hearing') return;
+    const full = joinAudio(session.carry, audio).slice(0, CONFIG.maxSamples);
+    session.carry = null;
+    submitTurn({ audio: full });
+  }
+
+  function onMisfire() {
+    if (session.state === 'hearing') setState('listening');
+  }
+
+  function looksLikeInAppBrowser() {
+    return /LinkedInApp|FBAN|FBAV|Instagram|Line\/|MicroMessenger/i.test(navigator.userAgent);
+  }
+
+  function micProblem() {
+    if (!navigator.mediaDevices || !window.vad || !window.isSecureContext) return MESSAGES.micMissing;
+    return null;
+  }
+
+  async function createVad() {
+    return window.vad.MicVAD.new({
+      model: 'v5',
+      baseAssetPath: CONFIG.vadAssets,
+      onnxWASMBasePath: CONFIG.ortAssets,
+      positiveSpeechThreshold: 0.5,
+      negativeSpeechThreshold: 0.35,
+      minSpeechMs: 350,
+      redemptionMs: 1100,
+      preSpeechPadMs: 500,
+      onFrameProcessed,
+      onSpeechRealStart,
+      onSpeechEnd,
+      onVADMisfire: onMisfire,
+    });
+  }
+
+  /* ---------- Session ---------- */
+
+  async function playGreeting() {
+    const row = addExchange(null);
+    setAnswer(row, CONFIG.greetingText);
+    if (!CONFIG.greetingAudio) return;
+    const response = await fetch(CONFIG.greetingAudio).catch(() => null);
+    if (!response || !response.ok || session.state !== 'listening') return;
+    playReply(await response.blob());
+  }
+
+  async function startSession() {
+    clearNotice();
+    const problem = micProblem();
+    if (problem) return showNotice(problem);
+    setState('loading');
+    await unlockAudio();
+    try {
+      session.vad = session.vad || await createVad();
+      await session.vad.start();
+    } catch (error) {
+      setState('idle');
+      return showNotice(MESSAGES.micDenied);
+    }
+    session.active = true;
+    session.muted = false;
+    el.mute.setAttribute('aria-pressed', 'false');
+    setState('listening');
+    if (session.history.length === 0) playGreeting();
+  }
+
+  function endSession() {
+    cancelTurn();
+    stopPlayback();
+    session.vad && session.vad.pause();
+    session.active = false;
+    session.carry = null;
+    setState('idle');
+  }
+
+  function toggleMute() {
+    session.muted = !session.muted;
+    el.mute.setAttribute('aria-pressed', String(session.muted));
+    el.mute.textContent = session.muted ? 'Unmute' : 'Mute';
+    session.muted ? session.vad.pause() : session.vad.start();
+    setState(session.state === 'hearing' ? 'listening' : session.state);
+  }
+
+  function pauseSession() {
+    session.heldPlayback = session.state === 'speaking' && !el.player.paused;
+    el.player.pause();
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    session.vad.pause();
+    setState('paused');
+  }
+
+  function resumeSession() {
+    if (!session.muted) session.vad.start();
+    const held = session.heldPlayback;
+    session.heldPlayback = false;
+    setState(session.turn ? 'thinking' : 'listening');
+    if (held) startPlayback();
+  }
+
+  function togglePause() {
+    session.state === 'paused' ? resumeSession() : pauseSession();
+  }
+
+  const ORB_ACTIONS = {
+    idle: startSession,
+    speaking: interruptSpeaking,
+    paused: resumeSession,
+  };
+
+  async function askTyped(text) {
+    const question = text.trim();
+    if (!question) return;
+    await unlockAudio();
+    stopPlayback();
+    cancelTurn();
+    submitTurn({ text: question });
+  }
+
+  /* ---------- Wiring ---------- */
+
+  function renderChips() {
+    CONFIG.questions.forEach((question) => {
+      const item = document.createElement('li');
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chip';
+      chip.textContent = question;
+      chip.addEventListener('click', () => askTyped(question));
+      item.append(chip);
+      el.chips.append(item);
+    });
+  }
+
+  el.orb.addEventListener('click', () => (ORB_ACTIONS[session.state] || (() => {}))());
+  el.mute.addEventListener('click', toggleMute);
+  el.pause.addEventListener('click', togglePause);
+  el.end.addEventListener('click', endSession);
+  el.composer.addEventListener('submit', (event) => {
+    event.preventDefault();
+    askTyped(el.input.value);
+    el.input.value = '';
+  });
+
+  renderChips();
+  setState('idle');
+  if (looksLikeInAppBrowser()) showNotice(MESSAGES.inApp);
+})();
+</script>
+</body>
+</html>
