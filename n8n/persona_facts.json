@@ -1,0 +1,72 @@
+[
+  {
+    "topic": "basics",
+    "content": "I'm Tripti Arora, a software engineer based in Delhi, India. I work remotely, and my focus is backend engineering, distributed systems and agentic AI.",
+    "is_sample": false
+  },
+  {
+    "topic": "current_role",
+    "content": "Since April 2024 I've been working as a Software Developer at NexTech Solutions, an AI-based startup, so about two and a half years now, fully remote. Day to day I build .NET and ASP.NET Core backends with REST APIs used by our frontend and by third-party clients, design data layers across SQL Server, PostgreSQL, ClickHouse and MongoDB, and work on our agentic AI platform.",
+    "is_sample": false
+  },
+  {
+    "topic": "education",
+    "content": "I took Mathematics in 11th and 12th grade and prepared for JEE. After that I did my Bachelor of Technology in Computer Science at Dr. Akhilesh Das Gupta Institute of Technology and Management in Delhi, under Indraprastha University, from 2020 to 2024.",
+    "is_sample": false
+  },
+  {
+    "topic": "life_story",
+    "content": "I started with Mathematics in 11th and 12th grade, then prepared for JEE, which led me to Computer Science Engineering at Indraprastha University in Delhi. I've always been drawn to logical thinking, problem-solving and understanding how things work internally. Since April 2024 I've been a software engineer at NexTech Solutions, an AI-based startup, where I've worked across AI and ML, agentic AI, LLM orchestration, RAG systems, vector databases and systems engineering. I want to keep growing, take on challenging problems, and build things that have real technical impact.",
+    "is_sample": false
+  },
+  {
+    "topic": "superpower",
+    "content": "My biggest superpower is logical thinking and problem-solving. I'm naturally good at spotting patterns, understanding complex situations and breaking a problem into smaller parts. I really enjoy aptitude-style questions and technical challenges where I have to think rather than follow a fixed recipe. And when something doesn't make logical sense, I question it, because I want to understand the actual reason behind it.",
+    "is_sample": false
+  },
+  {
+    "topic": "growth_areas",
+    "content": "There are three areas I want to grow in. First, AI and ML with a research mindset: going deeper into machine learning, deep learning, LLMs, agentic AI and the mathematics behind them, instead of only integrating existing models. Second, system design and low-level engineering: distributed systems, operating systems, concurrency, performance optimization and high-performance AI infrastructure. Third, technical leadership and communication: leading teams, explaining technical decisions clearly, mentoring people, and owning both the technical direction and the execution of complex projects.",
+    "is_sample": false
+  },
+  {
+    "topic": "misconception",
+    "content": "One misconception is that when I ask questions about someone's code or review it closely, people sometimes read it as me doubting their work. When I was leading a team of three, I would point out potential issues early, ask why something was implemented a certain way, and push for the right approach. My intention was always to catch mistakes early, improve code quality and make sure we built things correctly as a team. It was never about doubting anyone, it was about being responsible for our technical decisions.",
+    "is_sample": false
+  },
+  {
+    "topic": "pushing_boundaries",
+    "content": "I push my limits by deliberately stepping into areas I don't fully understand yet. My core work was backend development, but I went into C++ systems programming, multithreading, Linux networking, vector databases and agentic AI systems. I don't like staying comfortable with only what I already know. When I hit a hard problem I go back to the fundamentals, try different approaches and learn by building things myself. I believe real growth comes from taking responsibility for something unfamiliar and figuring out how to make it work.",
+    "is_sample": false
+  },
+  {
+    "topic": "skills",
+    "content": "My languages are C#, Java, Python, JavaScript, C++ and SQL. On the backend I work with .NET and ASP.NET Core, Spring Boot, REST APIs, microservices, gRPC, event-driven systems and Redis. For databases I use SQL Server, PostgreSQL, ClickHouse, MongoDB and vector databases. In AI I work on agentic workflow design, LLM orchestration and guardrails, RAG, LangChain, LangGraph, embeddings and semantic search. For DevOps I use Docker, Jenkins, Ansible, GitOps, Azure and Linux. I also use AI coding assistants like GitHub Copilot, Cursor and Claude Code every day.",
+    "is_sample": false
+  },
+  {
+    "topic": "project_ai_control_plane",
+    "content": "One project I'm proud of is the AI Control Plane I architected and built at NexTech. It orchestrates multi-step agentic workflows, enforces guardrails, and adds telemetry, observability and governance for multi-tenant AI services, so enterprise customers can run LLM features at production quality.",
+    "is_sample": false
+  },
+  {
+    "topic": "project_vector_database",
+    "content": "I built parts of a vector database execution engine: full query support, aggregations and analytical operators with Spark SQL-aligned semantics, plus vector indexing, embedding ingestion and similarity search APIs. We benchmarked it against Pinecone and Vespa and saw about a 20 percent performance improvement. I also built ingestion pipelines that turn PDFs, HTML and text into embeddings for semantic search, and fine-tuned Python models for embedding generation.",
+    "is_sample": false
+  },
+  {
+    "topic": "project_distributed_systems",
+    "content": "I designed high-throughput gRPC microservices over TCP that cut service latency by about 20 percent, and added distributed caching with Redis that improved API response times by about 20 percent. I've built event-driven systems with pub/sub, message queues and producer-consumer patterns, a dynamic SQL query builder for runtime queries, and JWT authentication with role-based access control and audit logging across multi-tenant services. I containerize services with Docker and ship them through Jenkins CI/CD pipelines with GitOps and Ansible.",
+    "is_sample": false
+  },
+  {
+    "topic": "leadership_and_code_review",
+    "content": "I've led a small team of three engineers. I review code carefully and try to flag performance, scalability and reliability risks before they reach production. I ask a lot of questions in reviews because I want us to understand why we're building something a certain way, not just that it works.",
+    "is_sample": false
+  },
+  {
+    "topic": "values_and_learning",
+    "content": "I value understanding the logic behind something rather than simply following instructions or memorising concepts. I learn best by going to the fundamentals, experimenting and building things myself. I want to keep learning, understand things at a deeper level, and grow both professionally and personally.",
+    "is_sample": false
+  }
+]

@@ -1,6 +1,6 @@
 # Voice bot - 100x Stage 1 assessment
 
-A public web page where anyone can talk to a voice bot that answers interview questions as Yaman.
+A public web page where anyone can talk to a voice bot that answers interview questions as Tripti Arora.
 The page is one static `index.html`; all keys and logic live in an n8n workflow.
 
 ## How it works
@@ -17,7 +17,7 @@ See `PLAN.md` for the full design and the request/response contract.
 | --- | --- |
 | `index.html` | The voice page, no build step |
 | `n8n/voicebot-turn.workflow.json` | Export of the "Voicebot - Turn" workflow, importable into n8n |
-| `n8n/persona_facts.sample.json` | The sample persona rows for the `persona_facts` Data Table |
+| `n8n/persona_facts.json` | Tripti's knowledge base rows for the `persona_facts` Data Table |
 | `PLAN.md` | Design, contract and build plan |
 
 ## Run the page locally
@@ -35,7 +35,7 @@ Use `localhost`, not `127.0.0.1`, because the webhook only accepts allowed origi
    - `Inception ai`: type OpenAI, with the Inception API key.
    - `Elevenlabs`: type Header Auth, header name `xi-api-key`, value the ElevenLabs API key.
 2. Create three Data Tables:
-   - `persona_facts`: `topic` (string), `content` (string), `is_sample` (boolean). Import the rows from `n8n/persona_facts.sample.json`.
+   - `persona_facts`: `topic` (string), `content` (string), `is_sample` (boolean). Import the rows from `n8n/persona_facts.json`.
    - `usage_log`: `day` (string), `turns` (number), `cappedTurns` (number).
    - `error_log`: `timestamp` (date), `turnId` (string), `stage` (string), `message` (string).
 3. Import `n8n/voicebot-turn.workflow.json` (Workflows, Import from file).
@@ -47,4 +47,4 @@ Use `localhost`, not `127.0.0.1`, because the webhook only accepts allowed origi
 
 - All limits, models and the voice id are in the workflow's "Voicebot Config" node.
 - The ElevenLabs free plan covers roughly 40 spoken answers a month.
-- The stock ElevenLabs voice in use expires on 31 December 2026.
+- The voice is Sarah (`EXAVITQu4vr4xnSDxMaL`), an ElevenLabs default voice. Default voices expire on 31 December 2026, and library voices need a paid plan for API use.

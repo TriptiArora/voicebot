@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>In conversation with Yaman Jain</title>
-<meta name="description" content="A voice interview with Yaman Jain's AI voice bot. Press start and ask your question out loud.">
+<title>In conversation with Tripti Arora</title>
+<meta name="description" content="A voice interview with Tripti Arora's AI voice bot. Press start and ask your question out loud.">
 <meta name="theme-color" content="#f2ede3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23d8402a'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%231b1a17' stroke-width='3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -299,14 +299,14 @@
 </head>
 <body data-state="idle">
 
-<div class="banner" id="sampleBanner" hidden>Sample data: these answers are placeholders, not Yaman's real ones yet.</div>
+<div class="banner" id="sampleBanner" hidden>Sample data: these answers are placeholders, not Tripti's real ones yet.</div>
 
 <div class="page">
   <section class="stage" aria-label="Voice controls">
     <header class="masthead">
       <span class="label">The voice interview</span>
-      <h1>In conversation with <em>Yaman Jain</em></h1>
-      <p>Ask what you would ask in a first interview. The answers are Yaman's, spoken by his AI voice bot.</p>
+      <h1>In conversation with <em>Tripti Arora</em></h1>
+      <p>Ask what you would ask in a first interview. The answers are Tripti's own, spoken by an AI voice bot.</p>
     </header>
 
     <div class="console">
@@ -368,7 +368,7 @@
     requestTimeoutMs: 45000,
     bargeInProbability: 0.8,
     bargeInMs: 350,
-    greetingText: "Hi, I'm Yaman's voice bot. Ask me anything you would ask in an interview.",
+    greetingText: "Hi, I'm Tripti's voice bot. Ask me anything you would ask in an interview.",
     greetingAudio: '',
     questions: [
       'What should we know about your life story in a few sentences?',
@@ -385,7 +385,7 @@
     listening: { word: 'Go on', label: 'Listening',     hint: 'Ask your question out loud.' },
     hearing:   { word: 'Mm-hm', label: 'Hearing you',   hint: 'Pause when you are done.' },
     thinking:  { word: 'Hmm',   label: 'Thinking',      hint: 'One moment.' },
-    speaking:  { word: 'Yaman', label: 'Speaking',      hint: 'Talk or tap the circle to interrupt.' },
+    speaking:  { word: 'Tripti', label: 'Speaking',      hint: 'Talk or tap the circle to interrupt.' },
     paused:    { word: 'Paused', label: 'Paused',       hint: 'Press Resume to carry on.' },
   };
 
@@ -476,7 +476,7 @@
   }
 
   function setAnswer(row, text) {
-    row.append(tagged('a', 'Yaman', text));
+    row.append(tagged('a', 'Tripti', text));
     row.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 
