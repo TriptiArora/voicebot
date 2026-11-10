@@ -47,4 +47,4 @@ Use `localhost`, not `127.0.0.1`, because the webhook only accepts allowed origi
 
 - All limits, models and the voice id are in the workflow's "Voicebot Config" node.
 - The ElevenLabs free plan covers roughly 40 spoken answers a month.
-- The voice is Sarah (`EXAVITQu4vr4xnSDxMaL`), an ElevenLabs default voice. Default voices expire on 31 December 2026, and library voices need a paid plan for API use.
+- The voice is Matilda (`XrExE9yKIg1WjnnlVkGX`), an ElevenLabs default voice. Default voices expire on 31 December 2026, and library voices need a paid plan for API use.

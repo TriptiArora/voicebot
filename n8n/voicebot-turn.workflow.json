@@ -110,7 +110,7 @@
             {
               "id": "cfg-ttsVoiceId",
               "name": "config.ttsVoiceId",
-              "value": "EXAVITQu4vr4xnSDxMaL",
+              "value": "XrExE9yKIg1WjnnlVkGX",
               "type": "string"
             },
             {
@@ -122,7 +122,7 @@
             {
               "id": "cfg-ttsOutputFormat",
               "name": "config.ttsOutputFormat",
-              "value": "mp3_22050_32",
+              "value": "mp3_44100_64",
               "type": "string"
             }
           ]
