@@ -15,7 +15,7 @@
         "path": "voicebot-turn",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "https://yaman-694.github.io,http://localhost:8765"
+          "allowedOrigins": "https://triptiarora.github.io,http://localhost:8765"
         }
       },
       "webhookId": "eabca18e-72bb-4fad-95a3-d9c33479bfcd"

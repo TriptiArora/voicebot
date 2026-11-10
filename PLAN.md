@@ -2,7 +2,7 @@
 
 ## Goal
 
-A public web page where anyone can talk to a voice bot that answers interview questions as Yaman.
+A public web page where anyone can talk to a voice bot that answers interview questions as Tripti Arora.
 No install, no API key entry, works on desktop and phone.
 The deadline is 24 hours from the 100x email.
 
@@ -82,9 +82,9 @@ Workflow settings: save failed executions only, so visitor audio is not stored.
 7. Test on Chrome, Safari, Firefox, iPhone and Android, including interruption, pause, mic denied and ElevenLabs failure.
 8. Measure the gap between question and answer, and show text before audio if it feels slow.
 9. Replace sample data with real answers and re-test with the five 100x questions plus unlisted ones.
-10. Yaman sends the URL and resume to 100x.
+10. Tripti sends the URL and resume to 100x.
 
-## Needed from Yaman
+## Needed from Tripti
 
 - ElevenLabs API key added in n8n as a Header Auth credential named `ElevenLabs`, header `xi-api-key`.
 - Real answers, using the questionnaire delivered in step 1.
